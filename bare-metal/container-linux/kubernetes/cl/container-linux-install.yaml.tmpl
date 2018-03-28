@@ -21,7 +21,7 @@ storage:
         inline: |
           #!/bin/bash -ex
           curl --retry 10 "${ignition_endpoint}?{{.request.raw_query}}&os=installed" -o ignition.json
-          coreos-install \
+          flatcar-install \
             -d ${install_disk} \
             -C ${container_linux_channel} \
             -V ${container_linux_version} \

@@ -1,18 +1,18 @@
-// Container Linux Install profile (from release.core-os.net)
+// Container Linux Install profile (from release.flatcar-linux.net)
 resource "matchbox_profile" "container-linux-install" {
   count = "${length(var.controller_names) + length(var.worker_names)}"
   name  = "${format("%s-container-linux-install-%s", var.cluster_name, element(concat(var.controller_names, var.worker_names), count.index))}"
 
-  kernel = "http://${var.container_linux_channel}.release.core-os.net/amd64-usr/${var.container_linux_version}/coreos_production_pxe.vmlinuz"
+  kernel = "http://${var.container_linux_channel}.release.flatcar-linux.net/amd64-usr/${var.container_linux_version}/flatcar_production_pxe.vmlinuz"
 
   initrd = [
-    "http://${var.container_linux_channel}.release.core-os.net/amd64-usr/${var.container_linux_version}/coreos_production_pxe_image.cpio.gz",
+    "http://${var.container_linux_channel}.release.flatcar-linux.net/amd64-usr/${var.container_linux_version}/flatcar_production_pxe_image.cpio.gz",
   ]
 
   args = [
-    "initrd=coreos_production_pxe_image.cpio.gz",
-    "coreos.config.url=${var.matchbox_http_endpoint}/ignition?uuid=$${uuid}&mac=$${mac:hexhyp}",
-    "coreos.first_boot=yes",
+    "initrd=flatcar_production_pxe_image.cpio.gz",
+    "flatcar.config.url=${var.matchbox_http_endpoint}/ignition?uuid=$${uuid}&mac=$${mac:hexhyp}",
+    "flatcar.first_boot=yes",
     "console=tty0",
     "console=ttyS0",
     "${var.kernel_args}",
@@ -44,16 +44,16 @@ resource "matchbox_profile" "cached-container-linux-install" {
   count = "${length(var.controller_names) + length(var.worker_names)}"
   name  = "${format("%s-cached-container-linux-install-%s", var.cluster_name, element(concat(var.controller_names, var.worker_names), count.index))}"
 
-  kernel = "/assets/coreos/${var.container_linux_version}/coreos_production_pxe.vmlinuz"
+  kernel = "/assets/flatcar/${var.container_linux_version}/flatcar_production_pxe.vmlinuz"
 
   initrd = [
-    "/assets/coreos/${var.container_linux_version}/coreos_production_pxe_image.cpio.gz",
+    "/assets/flatcar/${var.container_linux_version}/flatcar_production_pxe_image.cpio.gz",
   ]
 
   args = [
-    "initrd=coreos_production_pxe_image.cpio.gz",
-    "coreos.config.url=${var.matchbox_http_endpoint}/ignition?uuid=$${uuid}&mac=$${mac:hexhyp}",
-    "coreos.first_boot=yes",
+    "initrd=flatcar_production_pxe_image.cpio.gz",
+    "flatcar.config.url=${var.matchbox_http_endpoint}/ignition?uuid=$${uuid}&mac=$${mac:hexhyp}",
+    "flatcar.first_boot=yes",
     "console=tty0",
     "console=ttyS0",
     "${var.kernel_args}",
@@ -75,7 +75,7 @@ data "template_file" "cached-container-linux-install-configs" {
     container_linux_oem     = "${var.container_linux_oem}"
 
     # profile uses -b baseurl to install from matchbox cache
-    baseurl_flag = "-b ${var.matchbox_http_endpoint}/assets/coreos"
+    baseurl_flag = "-b ${var.matchbox_http_endpoint}/assets/flatcar"
   }
 }
 
